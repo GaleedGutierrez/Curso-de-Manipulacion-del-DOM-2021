@@ -1,0 +1,39 @@
+// Base colors
+$_white: #fff;
+$_black: #000;
+$_gold-web: #ffd602;
+$_rosso-corsa: #d5040a;
+$_spanish-blue: #036cb6;
+
+// Gral
+// Gral__Blue
+$blue: $_spanish-blue;
+
+// Gral__Yellow
+$yellow: $_gold-web;
+
+// Gral__Red
+$red: $_rosso-corsa;
+
+// Gral__Black
+$pure-black: $_black;
+
+// Gral__White
+$pure-white: $_white;
+
+// Primary
+// $primary-color: $dark-blue-300;
+
+// Shadow
+// $shadow-background: #C4C4C4;
+// $params-box-shadow: 0 2.4rem 3.2rem -0.8rem rgb($pure-black, 8%);
+
+// Background
+$background-yellow-color: $yellow;
+$background-blue-color: $blue;
+$background-lightest-color: $pure-white;
+
+// Text
+$text-color: $pure-black;
+$text-light-color: $pure-white;
+$text-red-color: $red;
