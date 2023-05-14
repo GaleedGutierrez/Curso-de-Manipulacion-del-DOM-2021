@@ -1,3 +1,5 @@
+// @ts-check
+
 const env = {
 	es2022: true,
 	browser: true,
@@ -29,13 +31,7 @@ const parserOptions = {
 };
 
 const rules = {
-	// "prettier/prettier": "error",
-	'prettier/prettier': [
-		'error',
-		{
-			endOfLine: 'auto',
-		},
-	],
+	'prettier/prettier': 'error',
 
 	//? ESLint
 	semi: ['error', 'always'],
@@ -145,7 +141,7 @@ const rules = {
 	//? TypeScript ESLint
 	'@typescript-eslint/type-annotation-spacing': 'error',
 	'@typescript-eslint/no-non-null-assertion': 'warn',
-	'@typescript-eslint/indent': ['error', 'tab', { SwitchCase: 1 }],
+	// '@typescript-eslint/indent': ['error', 'tab', { SwitchCase: 1 }],
 	'@typescript-eslint/consistent-type-definitions': 'warn',
 	'@typescript-eslint/naming-convention': [
 		'error',
