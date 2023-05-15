@@ -23,32 +23,55 @@ export interface IAvocadoJson {
 	data: IAvocado[];
 }
 
+const formatPrice = (price: number): string | null => {
+	const LOCALES = navigator.language;
+
+	const NEW_PRICE = new Intl.NumberFormat(LOCALES, {
+		style: 'currency',
+		currency: 'USD',
+	});
+
+	return NEW_PRICE.format(price);
+};
+
 const API_URL = 'https://platzi-avo.vercel.app/api/avo';
 const BASE_URL = 'https://platzi-avo.vercel.app';
 
 const RESPONSE = await fetch(API_URL);
 const RESPONSE_JSON: IAvocadoJson = await RESPONSE.json();
 const AVOCADOES = RESPONSE_JSON.data;
-const ALL_OF_AVOCADOES: HTMLElement[] = [];
 const APP_NODE = document.querySelector('#app') as HTMLDivElement;
 
-AVOCADOES.forEach((item) => {
+const NODE_ARRAY = AVOCADOES.map((item) => {
 	const FIGURE = document.createElement('figure');
 	const IMG = document.createElement('img');
 	const TITLE = document.createElement('h2');
 	const PRICE = document.createElement('p');
+	const DATA_CONTAINER = document.createElement('div');
 	const CONTAINER = document.createElement('div');
 
-	PRICE.textContent = `$${item.price.toString()}`;
+	// Content
 	TITLE.textContent = item.name;
+	PRICE.textContent = formatPrice(item.price);
 	IMG.src = `${BASE_URL}${item.image}`;
 	IMG.alt = item.name;
 
+	// Styles
+	IMG.className =
+		'h-16 w-16 md:h-24 md:w-24 rounded-full mx-auto md:mx-0 md:mr-6';
+	TITLE.className = 'text-lg';
+	PRICE.className = 'text-gray-600';
+	DATA_CONTAINER.className = 'text-center md:text-left';
+	CONTAINER.className = 'md:flex bg-white rounded-lg p-6 hover:bg-gray-300';
+
+	// Append
 	FIGURE.appendChild(IMG);
-	CONTAINER.append(FIGURE, TITLE, PRICE);
-	ALL_OF_AVOCADOES.push(CONTAINER);
+	DATA_CONTAINER.append(TITLE, PRICE);
+	CONTAINER.append(FIGURE, DATA_CONTAINER);
+
+	return CONTAINER;
 });
 
-APP_NODE.append(...ALL_OF_AVOCADOES);
+APP_NODE.append(...NODE_ARRAY);
 
 export {};
