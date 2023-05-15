@@ -73,5 +73,12 @@ const NODE_ARRAY = AVOCADOES.map((item) => {
 });
 
 APP_NODE.append(...NODE_ARRAY);
+APP_NODE.addEventListener('click', (event: Event) => {
+	const { target } = event;
+
+	if ((target as HTMLElement).nodeName === 'H2') {
+		alert('Hola');
+	}
+});
 
 export {};
