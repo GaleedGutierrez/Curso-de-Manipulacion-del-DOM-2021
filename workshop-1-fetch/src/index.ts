@@ -34,8 +34,8 @@ const formatPrice = (price: number): string | null => {
 	return NEW_PRICE.format(price);
 };
 
-const API_URL = 'https://platzi-avo.vercel.app/api/avo';
 const BASE_URL = 'https://platzi-avo.vercel.app';
+const API_URL = new URL('/api/avo', BASE_URL);
 
 const RESPONSE = await fetch(API_URL);
 const RESPONSE_JSON: IAvocadoJson = await RESPONSE.json();
