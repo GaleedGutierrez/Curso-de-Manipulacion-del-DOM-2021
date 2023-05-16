@@ -22,7 +22,7 @@ function getImg() {
 }
 
 // Obtener la imagen en base a la API de las imágenes
-async function getImgAsync() {
+export async function getImgAsync() {
 	const RESPONSE = await fetch(RANDOM_IMG_API);
 	const DATA: IImagesFoxRandom = await RESPONSE.json();
 
@@ -36,7 +36,7 @@ async function createImageNode() {
 	FIGURE.className = 'm-4 w-80 mx-auto';
 	IMG.alt = `Fox image ${counterFoxes}`;
 	// IMG.src = getImg();
-	IMG.src = await getImgAsync();
+	IMG.dataset.src = await getImgAsync();
 	FIGURE.appendChild(IMG);
 	IMGS_CONTAINER.appendChild(FIGURE);
 	counterFoxes++;
