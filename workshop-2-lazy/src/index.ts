@@ -1,65 +1,55 @@
-/**
- * This file is just a silly example to show everything working in the browser.
- * When you're ready to start on your site, clear the file. Happy hacking!
- **/
+import { OBSERVER, registerImage } from './lazy';
+import { ALL_IMGS, getImgAsync, logState } from './utils';
 
-import { registerImage } from './lazy';
-
-interface IImagesFoxRandom {
-	image: string;
-	link: string;
-}
-
-const getRandomNumber = (): number =>
-	Math.floor(Math.random() * (MAXIMUM - MINIMUM + 1)) + MINIMUM;
-
-// Obtener la imagen en base a un numero aleatorio
-function getImg() {
-	const IMG_NUMBER = getRandomNumber();
-	const URL_IMG = new URL(`/images/${IMG_NUMBER}.jpg`, BASE_URL);
-
-	return URL_IMG.href;
-}
-
-// Obtener la imagen en base a la API de las imágenes
-export async function getImgAsync() {
-	const RESPONSE = await fetch(RANDOM_IMG_API);
-	const DATA: IImagesFoxRandom = await RESPONSE.json();
-
-	return DATA.image;
-}
+export let loadedImages = 0;
 
 async function createImageNode() {
 	const FIGURE = document.createElement('figure');
 	const IMG = document.createElement('img');
 
 	FIGURE.className = 'm-4 w-80 mx-auto';
-	IMG.alt = `Fox image ${counterFoxes}`;
 	// IMG.src = getImg();
+	IMG.src =
+		'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIwIiBoZWlnaHQ9IjMyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2ZXJzaW9uPSIxLjEiLz4=';
 	IMG.dataset.src = await getImgAsync();
+	IMG.className = 'bg-gray-300';
 	FIGURE.appendChild(IMG);
+	ALL_IMGS.push(FIGURE);
+	IMG.alt = `Fox image ${ALL_IMGS.length}`;
 	IMGS_CONTAINER.appendChild(FIGURE);
-	counterFoxes++;
 	registerImage(IMG);
 }
 
+function cleanImgs() {
+	for (const FIGURE of ALL_IMGS) {
+		FIGURE.remove();
+	}
+
+	ALL_IMGS.splice(0, ALL_IMGS.length);
+	loadedImages = 0;
+	logState();
+}
+
+export const loadImg = async (entry: IntersectionObserverEntry) => {
+	const IMG = entry.target as HTMLImageElement;
+	const URL = IMG.dataset.src;
+
+	IMG.src = URL ?? (await getImgAsync());
+	OBSERVER.unobserve(IMG);
+	loadedImages++;
+	logState();
+};
+
 const APP = document.querySelector('#app') as HTMLDivElement;
+const ADD_IMG_BUTTON = document.querySelector(
+	'#add-img-btn'
+) as HTMLButtonElement;
+const CLEAN_BTN = document.querySelector('#clean-btn') as HTMLButtonElement;
 const IMGS_CONTAINER = document.createElement('div') as HTMLDivElement;
-const ADD_IMG_BUTTON = document.createElement('button');
 
-const BASE_URL = 'https://randomfox.ca';
-const RANDOM_IMG_API = new URL('/floof', BASE_URL);
-
-const MAXIMUM = 123;
-const MINIMUM = 1;
-let counterFoxes = 1;
-
-ADD_IMG_BUTTON.textContent = 'Agregar imagen';
-ADD_IMG_BUTTON.className =
-	'bg-blue-500 hover:bg-blue-700 text-white font-bold p-3 rounded m-2';
-
-APP.append(ADD_IMG_BUTTON, IMGS_CONTAINER);
-
+APP.appendChild(IMGS_CONTAINER);
 ADD_IMG_BUTTON.addEventListener('click', createImageNode);
+CLEAN_BTN.addEventListener('click', cleanImgs);
+logState();
 
 export {};
