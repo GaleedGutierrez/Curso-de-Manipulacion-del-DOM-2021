@@ -3,6 +3,8 @@
  * When you're ready to start on your site, clear the file. Happy hacking!
  **/
 
+import { registerImage } from './lazy';
+
 interface IImagesFoxRandom {
 	image: string;
 	link: string;
@@ -35,10 +37,10 @@ async function createImageNode() {
 	IMG.alt = `Fox image ${counterFoxes}`;
 	// IMG.src = getImg();
 	IMG.src = await getImgAsync();
-
 	FIGURE.appendChild(IMG);
 	IMGS_CONTAINER.appendChild(FIGURE);
 	counterFoxes++;
+	registerImage(IMG);
 }
 
 const APP = document.querySelector('#app') as HTMLDivElement;
